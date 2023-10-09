@@ -13,13 +13,9 @@ export class RealDatabase implements Database {
     }
 
     async getEmployeeById(id: number): Promise<Employee | undefined> {
-        let resolve: (value: Employee) => void;
-        let handler: (line: string) => void;
-
-        const promise = new Promise<Employee>((res: (value: Employee) => void) => {
+        const promise = new Promise<Employee>((resolve: (value: Employee) => void) => {
             const lineReader = this.lineReader;
-            resolve = res;
-            handler = this.createHandler(id, lineReader, resolve);
+            const handler = this.createHandler(id, lineReader, resolve);
             lineReader.on('line', handler);
         });
 
